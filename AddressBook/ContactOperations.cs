@@ -100,7 +100,7 @@ namespace AddressBook
         }
 
         //Display method for displaying the contacts in the list
-        public void displayContact()
+        public void DisplayContact()
         {
             if (contactlist.Count > 0)
             {
@@ -236,7 +236,7 @@ namespace AddressBook
 
 
                     case 4:
-                        contactOperations.displayContact();
+                        contactOperations.DisplayContact();
                         break;
 
                 }
