@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 
 namespace AddressBook
@@ -6,79 +7,123 @@ namespace AddressBook
     class ContactOperations
     {
         //List Creation
-        List<Contacts> contactlist;
+        public List<Contacts> contactlist;
 
         public ContactOperations()
         {
             contactlist = new List<Contacts>();
         }
 
-        //Add method for adding the contacts in the list
-        public void addContact(Contacts c)
+        //Add method for adding the contacts in the contact list
+        public void AddContact(Contacts c)
         {
             contactlist.Add(c);
 
         }
 
-        public void editContact(string name)
+        //Edit method for editing the contacts in the contact list
+        public void EditContact(string name)
         {
                 foreach (var contact in contactlist)
                 {
-                if(contact.FirstName.Equals(name))
-                    while(contact.FirstName.Equals(name))
+                if (contact.firstName.Equals(name))
+                {
+                    while (contact.firstName.Equals(name))
                     {
                         Console.WriteLine("Enter the First Name :");
-                        contact.FirstName = Console.ReadLine();
+                        contact.firstName = Console.ReadLine();
 
                         Console.WriteLine("Enter the Last Name :");
-                        contact.LastName = Console.ReadLine();
+                        contact.lastName = Console.ReadLine();
 
                         Console.WriteLine("Enter the Address :");
-                        contact.Address = Console.ReadLine();
+                        contact.address = Console.ReadLine();
 
                         Console.WriteLine("Enter the City :");
-                        contact.City = Console.ReadLine();
+                        contact.city = Console.ReadLine();
 
                         Console.WriteLine("Enter the Zip code :");
-                        contact.Zip = int.Parse(Console.ReadLine());
+                        contact.zipCode = int.Parse(Console.ReadLine());
 
                         Console.WriteLine("Enter the State :");
-                        contact.State = Console.ReadLine();
+                        contact.state = Console.ReadLine();
 
                         Console.WriteLine("Enter the Email :");
-                        contact.Email = Console.ReadLine();
+                        contact.email = Console.ReadLine();
 
                         Console.WriteLine("Enter the Phone number :");
-                        contact.PhoneNumber = int.Parse(Console.ReadLine());
+                        contact.phoneNumber = int.Parse(Console.ReadLine());
 
-                    break;
+                        Console.WriteLine();
+                        Console.WriteLine("Contact Edited Successfully ");
+                        Console.WriteLine();
+                        Console.WriteLine("----------------------------------------------------");
+                        break;
 
                     }
-                else { Console.WriteLine("contacts not found"); }
                     
-   
                 }
-       
+                else { 
+                    Console.WriteLine("Contact not found"); 
+                }
+             
+                }
+        }
+
+        //Remove method for removing the contacts from the contact list
+        public void removeContact(string name)
+        {
+            Contacts c = find(name);
+            if(c != null)
+            {
+                contactlist.Remove(c);
+                Console.WriteLine("Contact removed successfully");
+            }
+            else
+            {
+                Console.WriteLine("No contact found");
+            }
+           
+
+
+        }
+
+        //Find method for searching the contact in the contact list
+        public Contacts find(string name)
+        {
+            Contacts c = contactlist.Find(delegate (Contacts c)
+            {
+                return c.firstName == name;
+            }
+            );
+            return c;
         }
 
         //Display method for displaying the contacts in the list
         public void displayContact()
         {
-            Console.WriteLine();
-            Console.WriteLine("CONTACT DETAILS");
-            Console.WriteLine("----------------------------------------------------");
-
-            foreach (var contact in contactlist)
+            if (contactlist.Count > 0)
             {
-                Console.WriteLine("First Name : " + contact.FirstName);
-                Console.WriteLine("Last Name : " + contact.LastName);
-                Console.WriteLine("Address : " + contact.Address);
-                Console.WriteLine("City : " + contact.City);
-                Console.WriteLine("Zip Code : " + contact.Zip);
-                Console.WriteLine("State : " + contact.State);
-                Console.WriteLine("Email : " + contact.Email);
-                Console.WriteLine("Phone Number : " + contact.PhoneNumber);
                 Console.WriteLine();
+                Console.WriteLine("CONTACT DETAILS");
+                Console.WriteLine("----------------------------------------------------");
+                foreach (var contact in contactlist)
+                {
+                    Console.WriteLine("First Name : " + contact.firstName);
+                    Console.WriteLine("Last Name : " + contact.lastName);
+                    Console.WriteLine("Address : " + contact.address);
+                    Console.WriteLine("City : " + contact.city);
+                    Console.WriteLine("Zip Code : " + contact.zipCode);
+                    Console.WriteLine("State : " + contact.state);
+                    Console.WriteLine("Email : " + contact.email);
+                    Console.WriteLine("Phone Number : " + contact.phoneNumber);
+                    Console.WriteLine();
+                }
+            }
+            else
+            {
+                Console.WriteLine("ADDRESS BOOK IS EMPTY");
+                Console.WriteLine("----------------------------------------------------");
             }
         }
     }
@@ -88,26 +133,37 @@ namespace AddressBook
     {
         static void Main(string[] args)
         {
+            //Creating object of class ContactOperations
             ContactOperations contactOperations = new ContactOperations();
 
-            Console.WriteLine("ADDRESS BOOK");
+            //Menu driven Program
+            Console.WriteLine("**************ADDRESS BOOK**************");
             Console.WriteLine();
-            int choice = 0;
-            while (choice != 4)
-            {
-               Console.WriteLine("MENU FOR CONTACT OPERATIONS");
-            Console.WriteLine("1.Add Contact \n2.Edit Contact \n3.Display Contact");
-            Console.WriteLine("Enter choice :");
-            choice = int.Parse(Console.ReadLine());
 
-            
+            int choice = 0;
+
+            while (choice != 5)
+            {
+                Console.WriteLine("MENU FOR CONTACT OPERATIONS");
+                Console.WriteLine("1.Add Contact \n2.Edit Contact \n3.Remove Contact \n4.Display Contact \n5.Exit");
+
+                Console.WriteLine("----------------------------------------------------");
+
+                Console.WriteLine("Enter choice :");
+                choice = int.Parse(Console.ReadLine());
+
+                Console.WriteLine("----------------------------------------------------");
+
+
                 switch (choice)
                 {
                     case 1:
                         Console.WriteLine("ADD CONTACT DETAILS");
+
                         int size;
                         Console.WriteLine("Enter the number of contacts to add : ");
                         size = int.Parse(Console.ReadLine());
+
                         Console.WriteLine();
 
                         for (int contactNum = 0; contactNum < size; contactNum++)
@@ -141,32 +197,45 @@ namespace AddressBook
 
                             Contacts c = new Contacts
                             {
-                                FirstName = firstName,
-                                LastName = lastName,
-                                Address = address,
-                                City = city,
-                                Zip = zip,
-                                State = state,
-                                Email = email,
-                                PhoneNumber = phoneNumber
+                                firstName = firstName,
+                                lastName = lastName,
+                                address = address,
+                                city = city,
+                                zipCode = zip,
+                                state = state,
+                                email = email,
+                                phoneNumber = phoneNumber
                                 
                         };
-                            contactOperations.addContact(c);
+                            contactOperations.AddContact(c);
+                            Console.WriteLine("Contact Added Successfully");
                         }
+                        Console.WriteLine();
                         Console.WriteLine("----------------------------------------------------");
                         break;
 
                     case 2:
                         Console.WriteLine("EDIT CONTACT DETAILS");
+
                         Console.WriteLine("Enter the name :");
                         string name = Console.ReadLine();
 
-                        // Checking if the User input id is same in the Patient's list
-                        contactOperations.editContact(name);
+                        contactOperations.EditContact(name);
+                        
                         break;
 
                     case 3:
-                        Console.WriteLine("DISPLAYING CONTACT DETAILS");
+                        Console.WriteLine("REMOVE CONTACT DETAILS");
+
+                        Console.WriteLine("Enter the name :");
+                        name = Console.ReadLine();
+
+                        contactOperations.removeContact(name);
+                        
+                        break;
+
+
+                    case 4:
                         contactOperations.displayContact();
                         break;
 
