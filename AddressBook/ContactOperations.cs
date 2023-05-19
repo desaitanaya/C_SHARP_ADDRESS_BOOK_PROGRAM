@@ -71,9 +71,9 @@ namespace AddressBook
         }
 
         //Remove method for removing the contacts from the contact list
-        public void removeContact(string name)
+        public void RemoveContact(string name)
         {
-            Contacts c = find(name);
+            Contacts c = FindContact(name);
             if(c != null)
             {
                 contactlist.Remove(c);
@@ -89,7 +89,7 @@ namespace AddressBook
         }
 
         //Find method for searching the contact in the contact list
-        public Contacts find(string name)
+        public Contacts FindContact(string name)
         {
             Contacts c = contactlist.Find(delegate (Contacts c)
             {
@@ -230,7 +230,7 @@ namespace AddressBook
                         Console.WriteLine("Enter the name :");
                         name = Console.ReadLine();
 
-                        contactOperations.removeContact(name);
+                        contactOperations.RemoveContact(name);
                         
                         break;
 
